@@ -20,7 +20,10 @@ variable "resource_label" {
   type        = string
   description = "Prefix used to avoid naming conflict"
 }
-
+variable "home_compartment_id" {
+  type        = string
+  description = "Home Compartment ID"
+}
 # -----------------------------------------------------------------------------
 # Common Variables
 # -----------------------------------------------------------------------------
@@ -121,4 +124,8 @@ variable "enable_network_monitoring_alarms" {
 variable "enable_workload_monitoring_alarms" {
   type        = bool
   description = "Enable Workload Monitoring Alarms in Workload Compartment"
+}
+variable "is_create_alarms" {
+  type        = bool
+  description = "Enable Alarms Creation in all Compartment"
 }

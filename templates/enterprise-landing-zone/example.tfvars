@@ -92,3 +92,8 @@ nonprod_platform_topic_endpoints = []
 nonprod_identity_topic_endpoints = []
 nonprod_workload_topic_endpoints = []
 
+# Workload Expansion
+prod_additional_workload_subnets_cidr_blocks = []
+nonprod_additional_workload_subnets_cidr_blocks = []
+prod_workload_compartment_names = []
+nonprod_workload_compartment_names = []

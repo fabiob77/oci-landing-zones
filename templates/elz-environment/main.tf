@@ -16,16 +16,20 @@ module "compartment" {
 }
 
 module "identity" {
-  source                       = "../elz-identity"
-  tenancy_ocid                 = var.tenancy_ocid
-  region                       = var.region
-  environment_prefix           = var.environment_prefix
+  source             = "../elz-identity"
+  tenancy_ocid       = var.tenancy_ocid
+  region             = var.region
+  environment_prefix = var.environment_prefix
+
   environment_compartment_id   = module.compartment.compartments.environment.id
   environment_compartment_name = module.compartment.compartments.environment.name
+  shared_compartment_id        = module.compartment.compartments.shared.id
+  shared_compartment_name      = module.compartment.compartments.shared.name
   security_compartment_id      = module.compartment.compartments.security.id
   security_compartment_name    = module.compartment.compartments.security.name
   network_compartment_id       = module.compartment.compartments.network.id
   network_compartment_name     = module.compartment.compartments.network.name
+  domain_license_type          = var.domain_license_type
   domain_admin_email           = var.domain_admin_email
   network_admin_group_name     = var.network_admin_group_name
   security_admin_group_name    = var.security_admin_group_name
@@ -37,6 +41,8 @@ module "identity" {
   database_admin_group_name    = var.database_admin_group_name
   workload_compartment_id      = module.workload.compartment_id
   workload_compartment_name    = module.workload.compartment_name
+  workload_compartment_names   = var.workload_compartment_names
+  home_compartment_id          = var.home_compartment_id
 
   providers = {
     oci             = oci
@@ -66,6 +72,7 @@ module "budget" {
   budget_alert_rule_threshold  = var.budget_alert_rule_threshold
   budget_alert_rule_message    = var.budget_alert_rule_message
   budget_alert_rule_recipients = var.budget_alert_rule_recipients
+  home_compartment_id          = var.home_compartment_id
 
   providers = {
     oci             = oci
@@ -112,6 +119,7 @@ module "network" {
   environment_prefix     = var.environment_prefix
   region                 = var.region
   network_compartment_id = module.compartment.compartments.network.id
+  home_compartment_id          = var.home_compartment_id
 
   enable_internet_gateway_hub  = var.enable_internet_gateway_hub
   enable_nat_gateway_hub       = var.enable_nat_gateway_hub
@@ -124,10 +132,8 @@ module "network" {
   service_gw_hub_check      = var.service_gw_hub_check
   nat_gw_spoke_check        = var.nat_gw_spoke_check
   service_gw_spoke_check    = var.service_gw_spoke_check
-  network_admin_group_name  = var.network_admin_group_name
   workload_compartment_id   = module.workload.compartment_id
   workload_compartment_name = module.workload.compartment_name
-  network_compartment_name  = module.compartment.compartments.network.name
 
   vcn_cidr_block                      = var.vcn_cidr_block
   public_subnet_cidr_block            = var.public_subnet_cidr_block
@@ -141,6 +147,8 @@ module "network" {
   enable_vpn_on_environment           = var.enable_vpn_on_environment
   enable_fastconnect_on_environment   = var.enable_fastconnect_on_environment
   customer_onprem_ip_cidr             = var.customer_onprem_ip_cidr
+
+  additional_workload_subnets_cidr_blocks = var.additional_workload_subnets_cidr_blocks
 
   providers = {
     oci             = oci
@@ -160,6 +168,7 @@ module "tagging" {
   tenancy_ocid                 = var.tenancy_ocid
   cost_center_tagging          = var.cost_center_tagging
   geo_location_tagging         = var.geo_location_tagging
+  home_compartment_id          = var.home_compartment_id
 
   providers = {
     oci             = oci
@@ -174,12 +183,14 @@ module "monitoring" {
   region             = var.region
   environment_prefix = var.environment_prefix
   resource_label     = var.resource_label
+  home_compartment_id  = var.home_compartment_id
 
   environment_compartment_id = module.compartment.compartments.environment.id
   security_compartment_id    = module.compartment.compartments.security.id
   network_compartment_id     = module.compartment.compartments.network.id
   workload_compartment_id    = module.workload.compartment_id
 
+  is_create_alarms         = var.is_create_alarms
   network_topic_endpoints  = var.network_topic_endpoints
   secops_topic_endpoints   = var.secops_topic_endpoints
   platform_topic_endpoints = var.platform_topic_endpoints

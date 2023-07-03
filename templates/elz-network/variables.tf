@@ -16,6 +16,11 @@ variable "environment_prefix" {
   description = "the 1 character string representing the environment eg. P (prod), N (non-prod), D, T, U"
 }
 
+variable "home_compartment_id" {
+  type        = string
+  description = "Home Compartment ID"
+}
+
 # -----------------------------------------------------------------------------
 # Network Variables
 # -----------------------------------------------------------------------------
@@ -80,15 +85,7 @@ variable "workload_compartment_name" {
   type        = string
   description = "WorkLoad Compartment Name"
 }
-variable "network_compartment_name" {
-  type        = string
-  description = "Network Compartment Name"
-}
-variable "network_admin_group_name" {
-  type        = string
-  default     = ""
-  description = "The group name for the OCI Landing Zone Network Administrators Group"
-}
+
 variable "vcn_cidr_block" {
   type        = string
   description = "VCN CIDR Block."
@@ -152,4 +149,12 @@ variable "enable_fastconnect_on_environment" {
 
 variable "customer_onprem_ip_cidr" {
   type = list(string)
+}
+
+# -----------------------------------------------------------------------------
+# Workload Network Variables
+# -----------------------------------------------------------------------------
+variable "additional_workload_subnets_cidr_blocks" {
+  type        = list(string)
+  description = "A list of subnets cidr blocks in additional workload stack"
 }
